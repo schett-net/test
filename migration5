@@ -1,0 +1,10 @@
+{
+    "pages": {
+        "SitePage /dev-404-page/": {
+            "context": {
+                "fileUrl": "https://cloudflare-ipfs.com/ipfs/QmWRihViYAgAzcSVLX27rEFwGWCw5B9Pugy2hRnVLKTChF",
+                "createdAt": "2021-09-02T07:36:32.733Z"
+            }
+        }
+    }
+}
