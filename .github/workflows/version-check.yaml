@@ -1,10 +1,16 @@
-- name: Check if version has been updated
-  id: check
-  uses: EndBug/version-check@v2
+name: Deploy remote repositories on version change
+on: push
 
-- name: Log when changed
-  if: steps.check.outputs.changed == 'true'
-  run: |
-    echo "Version change found in commit ${{ steps.check.outputs.commit }}! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"
+jobs:
+  remote-deploy:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_REMOTE_REPOSITORIES: (kanbonqs/form-app, kanbonqs/morgengold-form)
+    steps:
+      - name: Check if version has been updated
+        id: check
+        uses: EndBug/version-check@v2
 
-    # Dispatch
+      - name: Log when changed
+        if: steps.check.outputs.changed == 'true'
+        run: 'echo "Version change found in commit ${{ steps.check.outputs.commit }}! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
