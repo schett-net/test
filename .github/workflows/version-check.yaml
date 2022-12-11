@@ -7,6 +7,8 @@ jobs:
     env:
       GITHUB_REMOTE_REPOSITORIES: (kanbonqs/form-app, kanbonqs/morgengold-form)
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2.5.0
       - name: Check if version has been updated
         id: check
         uses: EndBug/version-check@v2
