@@ -2,8 +2,10 @@ name: Deploy remote repositories on version change
 on: push
 
 jobs:
-  versioncheck:
+  check-version:
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.check.outputs.changed }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -16,8 +18,8 @@ jobs:
         run: 'echo "Version change found in commit ${{ steps.check.outputs.commit }}! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
 
   dispatch:
-    needs: versioncheck
-    if: needs.versioncheck.outputs.changed == 'true'
+    needs: check-version
+    if: needs.check-version.outputs.changed == 'true'
     strategy:
       matrix:
         repo: ['my-org/repo1', 'my-org/repo2', 'my-org/repo3']
