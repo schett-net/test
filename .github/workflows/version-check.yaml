@@ -2,10 +2,8 @@ name: Deploy remote repositories on version change
 on: push
 
 jobs:
-  remote-deploy:
+  check-version:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_REMOTE_REPOSITORIES: (kanbonqs/form-app, kanbonqs/morgengold-form)
     steps:
       - name: Checkout
         uses: actions/checkout@v2.5.0
@@ -16,3 +14,18 @@ jobs:
       - name: Log when changed
         if: steps.check.outputs.changed == 'true'
         run: 'echo "Version change found in commit ${{ steps.check.outputs.commit }}! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
+
+  dispatch:
+    needs: check-version
+    if: needs.check-version.outputs.changed == 'true'
+    strategy:
+      matrix:
+        repo: ['my-org/repo1', 'my-org/repo2', 'my-org/repo3']
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.PAT }}
+          repository: ${{ matrix.repo }}
+          event-type: my-event
