@@ -28,6 +28,6 @@ jobs:
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v2
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.REMOTE_DEPLOY_PAT }}
           repository: ${{ matrix.repo }}
-          event-type: my-event
+          event-type: remote-deploy
